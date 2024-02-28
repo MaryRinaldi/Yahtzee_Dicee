@@ -1,26 +1,28 @@
 import './App.css'
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useRef } from "react";
 
 
-
-export default function App() {
-const [rollBtn, setRollBtn] = useState("");
+export default function App()
+{
+const dice = useRef();
+const roll = useRef();
 
 const randomDice = () => {
   const random = Math.floor(Math.random() * 10);
   if (random >= 1 && random <= 6) {
-    rollDice(random)
-  } else {
+    rollDice(random);
+   } else {
     randomDice()
   }
-}  
+};
 
 const rollDice = random => {
-  dice.style.animation = 'rolling 4s';
+  dice.style={animation: 'rolling 4s'};
   setTimeout(() => {
     switch (random) {
       case 1:
-        dice.style.transform = 'rotateX(0deg) rotateY(0deg)';
+        dice.style={transform: 'rotateX(0deg) rotateY(0deg)'};
         break;
       case 6:
         dice.style.transform = 'rotateX(180deg) rotateY(0deg)';
@@ -40,22 +42,16 @@ const rollDice = random => {
       default:
         break;
     }
-    dice.style.animation = "none";
+    dice.style={animation: 'none'};
   }, 4050);
 }
 
 
-
-    
-
-
-
   return (
-    <body>
-    <title>Yahtzee Dice</title>
+    <div className='App'>
+      <h2>Yahtzee Dice Roller</h2>
      <div className="container">
-      <h2>ROLL DICE</h2>
-       <div className="dice">
+        <div className="dice" ref={dice}>  
         <div className="face front"></div>
         <div className="face back"></div>
         <div className="face top"></div>
@@ -63,12 +59,10 @@ const rollDice = random => {
         <div className="face right"></div>
         <div className="face left"></div>        
       </div>
-      <button className='roll' onClick={rollDice} >
-        Roll
-      </button>
+      <button className='roll' ref={roll} onClick={randomDice}> Roll </button>
     </div>
 
-    </body>
+    </div>
    
   );
 };
