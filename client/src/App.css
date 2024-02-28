@@ -23,6 +23,12 @@ body{
   background: #eee;
   box-shadow:  0 0 20px rgba(0, 0, 0, 0.1);
 }
+h2 {
+  display: grid;
+  place-items: center;
+  width: 250px;
+}
+
 
 .dice{
   position: relative;
