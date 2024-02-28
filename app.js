@@ -8,8 +8,7 @@ var indexRouter = require('./routes/index');
 
 var app = express();
 
-const dice = document.querySelecton('dice')
-const rollBtn = document.querySelector('.roll')
+
 
 app.use(cors());
 app.use(logger('dev'));

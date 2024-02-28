@@ -1,6 +1,5 @@
 import './App.css'
-import { useState } from "react";
-import { useRef } from "react";
+import { useState, useRef } from "react";
 
 
 export default function App()
@@ -25,19 +24,19 @@ const rollDice = random => {
         dice.style={transform: 'rotateX(0deg) rotateY(0deg)'};
         break;
       case 6:
-        dice.style.transform = 'rotateX(180deg) rotateY(0deg)';
+        dice.style={transform: 'rotateX(180deg) rotateY(0deg)'};
         break;
       case 2:
-        dice.style.transform = 'rotateX(-90deg) rotateY(0deg)';
+        dice.style={transform: 'rotateX(-90deg) rotateY(0deg)'};
         break;
       case 5:
-        dice.style.transform = 'rotateX(90deg) rotateY(0deg)';
+        dice.style={transform: 'rotateX(90deg) rotateY(0deg)'};
         break;
       case 3:
-        dice.style.transform = 'rotateX(0deg) rotateY(90deg)';
+        dice.style={transform: 'rotateX(0deg) rotateY(90deg)'};
         break;
       case 4:
-        dice.style.transform = 'rotateX(0deg) rotateY(-90deg)';
+        dice.style={transform: 'rotateX(0deg) rotateY(-90deg)'};
         break;
       default:
         break;
@@ -52,12 +51,12 @@ const rollDice = random => {
       <h2>Yahtzee Dice Roller</h2>
      <div className="container">
         <div className="dice" ref={dice}>  
-        <div className="face front" ref={dice}></div>
-        <div className="face back" ref={dice}></div>
-        <div className="face top" ref={dice}></div>
-        <div className="face bottom" ref={dice}></div>
-        <div className="face right" ref={dice}></div>
-        <div className="face left" ref={dice}></div>        
+        <div className="face front" ></div>
+        <div className="face back" ></div>
+        <div className="face top"></div>
+        <div className="face bottom" ></div>
+        <div className="face right" ></div>
+        <div className="face left" ></div>        
       </div>
       <button className='roll' ref={roll} onClick={randomDice}> Roll </button>
     </div>
