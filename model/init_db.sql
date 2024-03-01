@@ -1,25 +1,14 @@
---
 -- Drop Tables
---
+DROP TABLE IF EXISTS dice_results;
 
-SET foreign_key_checks = 0;
-DROP TABLE if exists students;
-SET foreign_key_checks = 1;
-
---
 -- Create Tables
---
-
-CREATE TABLE students(
-    id INT NOT NULL AUTO_INCREMENT, 
-    firstname VARCHAR(40) not null, 
-    lastname VARCHAR(40) not null, 
+CREATE TABLE dice_results (
+    id INT NOT NULL AUTO_INCREMENT,
+    dice1 INT NOT NULL,
+    dice2 INT NOT NULL,
+    dice3 INT NOT NULL,
+    dice4 INT NOT NULL,
+    dice5 INT NOT NULL,
+    total_sum INT NOT NULL,
     PRIMARY KEY (id)
-    );
-
-INSERT into students (
-    firstname, lastname
-)
-VALUES (
-    "Maria Carolina", "Rinaldi"
 );

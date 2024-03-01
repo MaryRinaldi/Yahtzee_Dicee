@@ -1,11 +1,12 @@
 require("dotenv").config();
 const mysql = require("mysql");
 
-module.exports = async function db(query) {
+module.exports = async function db(query, values = []) {
   const results = {
     data: [],
     error: null
   };
+
   let promise = await new Promise((resolve, reject) => {
     const DB_HOST = process.env.DB_HOST;
     const DB_USER = process.env.DB_USER;
@@ -21,13 +22,19 @@ module.exports = async function db(query) {
     });
 
     con.connect(function(err) {
-      if (err) throw err;
-      console.log("Connected!");
+      if (err) {
+        results.error = err;
+        console.log("Error connecting to database:", err);
+        reject(err);
+        return;
+      }
 
-      con.query(query, function(err, result) {
+      console.log("Connected to database!");
+
+      con.query(query, values, function(err, result) {
         if (err) {
           results.error = err;
-          console.log(err);
+          console.log("Error executing query:", err);
           reject(err);
           con.end();
           return;
@@ -36,24 +43,18 @@ module.exports = async function db(query) {
         if (!result.length) {
           if (result.affectedRows === 0) {
             results.error = "Action not complete";
-            console.log(err);
+            console.log("Action not complete:", err);
             reject(err);
             con.end();
             return;
           }
-
-          // push the result (which should be an OkPacket) to data
-          // germinal - removed next line because it returns an array in an array when empty set
-          // results.data.push(result);
         } else if (result[0].constructor.name == "RowDataPacket") {
-          // push each row (RowDataPacket) to data
           result.forEach(row => results.data.push(row));
         } else if (result[0].constructor.name == "OkPacket") {
-          // push the first item in result list to data (this accounts for situations
-          // such as when the query ends with SELECT LAST_INSERT_ID() and returns an insertId)
           results.data.push(result[0]);
         }
 
+        console.log("Query executed successfully:", result);
         con.end();
         resolve(results);
       });

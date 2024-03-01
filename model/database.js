@@ -11,7 +11,7 @@ const con = mysql.createConnection({
   host: DB_HOST || "127.0.0.1",
   user: DB_USER || "root",
   password: DB_PASS,
-  database: DB_NAME || "facebook",
+  database: DB_NAME || "Yahtzee game",
   multipleStatements: true
 });
 
@@ -19,13 +19,24 @@ con.connect(function(err) {
   if (err) throw err;
   console.log("Connected!");
 
-  let sql = fs.readFileSync(__dirname + "/init_db.sql").toString();
+  // Creation of the table for dice data
+  let sql = `
+    CREATE TABLE IF NOT EXISTS dice_rolls (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      roll1 INT NOT NULL,
+      roll2 INT NOT NULL,
+      roll3 INT NOT NULL,
+      roll4 INT NOT NULL,
+      roll5 INT NOT NULL,
+      total_sum INT NOT NULL
+    );
+  `;
+
   con.query(sql, function(err, result) {
     if (err) throw err;
-    console.log("Table creation `students` was successful!");
+    console.log("Table creation `dice_rolls` was successful!");
 
-    console.log("Closing...");
+    console.log("Closing connection...");
+    con.end();
   });
-
-  con.end();
 });
