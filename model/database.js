@@ -1,6 +1,6 @@
 require("dotenv").config();
 const mysql = require("mysql");
-const fs = require("fs");
+
 
 const DB_HOST = process.env.DB_HOST;
 const DB_USER = process.env.DB_USER;
@@ -11,32 +11,31 @@ const con = mysql.createConnection({
   host: DB_HOST || "127.0.0.1",
   user: DB_USER || "root",
   password: DB_PASS,
-  database: DB_NAME || "Yahtzee game",
+  database: DB_NAME || "Yahtzee_game",
   multipleStatements: true
 });
 
 con.connect(function(err) {
   if (err) throw err;
   console.log("Connected!");
-
+})
   // Creation of the table for dice data
-  let sql = `
-    CREATE TABLE IF NOT EXISTS dice_rolls (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      roll1 INT NOT NULL,
-      roll2 INT NOT NULL,
-      roll3 INT NOT NULL,
-      roll4 INT NOT NULL,
-      roll5 INT NOT NULL,
-      total_sum INT NOT NULL
-    );
+function insertDiceRolls(roll1, roll2, roll3, roll4, roll5, totalSum) {
+  const sql = `
+    INSERT INTO dice_rolls (roll1, roll2, roll3, roll4, roll5, total_sum)
+    VALUES (?, ?, ?, ?, ?, ?)
   `;
+  const values = [roll1, roll2, roll3, roll4, roll5, totalSum];
 
-  con.query(sql, function(err, result) {
+  console.log(values)
+
+  con.query(sql, values, function(err, result) {
     if (err) throw err;
     console.log("Table creation `dice_rolls` was successful!");
+   });
+}
 
-    console.log("Closing connection...");
-    con.end();
-  });
-});
+  module.exports = {
+    con,
+    insertDiceRolls
+  };

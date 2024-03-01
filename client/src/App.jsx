@@ -1,6 +1,6 @@
 import './App.css'
 import './Dice.css'
-import { createRoot } from 'react-dom/client';
+// import { insertDiceRolls } from '../../model/database';
 import React, { useState, useRef } from "react";
 
 const Dice = ({ style, onClick, value }) => (
@@ -55,6 +55,7 @@ const randomDice = () => {
   const totalSum = containerDiceSum + keptDiceSum;
   console.log(`Result: ${dice1Result}, ${dice2Result}, ${dice3Result}, ${dice4Result}, ${dice5Result}`);
   console.log(`Sum: ${totalSum}`);
+  
 };
 
 //function to roll a single dice and update style
