@@ -1,20 +1,12 @@
 import './App.css'
-import './Dice.css'
+import './dice.css'
+import './media.css'
+import { Dice, rollDice } from './Dice.jsx';
 import React, { useState, useRef } from "react";
 
-const Dice = ({ style, onClick, value }) => (
-  <div className="dice" style={style} onClick={onClick}>
-    <div className="face front"></div>
-    <div className="face back"></div>
-    <div className="face top"></div>
-    <div className="face bottom"></div>
-    <div className="face right"></div>
-    <div className="face left"></div>
-    <div className="value">{value}</div>
-  </div>
-);
 
 export default function App() {
+  
   const [diceValues, setDiceValues] = useState([1, 2, 3, 4, 5]);
   const [diceStyles, setDiceStyles] = useState({
     dice1Style: {},
@@ -25,15 +17,16 @@ export default function App() {
   });
   const [sum, setSum] = useState(0);
   const [showSum, setShowSum] = useState(false);
-  const [keptDice, setKeptDice] = useState([]);
+  const [keptDice, setKeptDice] = useState([false, false, false, false, false]);
   const roll = useRef();
   const [totalSum, setTotalSum] = useState(0);
+  const hasDiceInContainer = keptDice.includes(false)
 
   const randomDice = () => {
     setSum(0);
     setShowSum(false);
     const newDiceValues = diceValues.map((value, index) => {
-      if (diceStyles[`dice${index + 1}Style`].display !== 'none') {
+      if (!keptDice[index]) {
         return rollDice(index + 1, `setDice${index + 1}Style`);
       }
       return value;
@@ -103,93 +96,54 @@ export default function App() {
   };
   
   const handleDiceClick = (diceNumber) => {
-    console.log(`Clicked on dice ${diceNumber}:${diceValues[diceNumber - 1]}`);
-    let newDiceObj = {};
-    switch (diceNumber) {
-      case 1:
-        newDiceObj = { style: diceStyles.dice1Style, value: diceValues[0] };
-        setDiceStyles(prev => ({...prev, dice1Style: { display: 'none' }}));
-        break;
-      case 2:
-        newDiceObj = { style: diceStyles.dice2Style, value: diceValues[1] };
-        setDiceStyles(prev => ({...prev, dice2Style: { display: 'none' }}));
-        break;
-      case 3:
-        newDiceObj = { style: diceStyles.dice3Style, value: diceValues[2] };
-        setDiceStyles(prev => ({...prev, dice3Style: { display: 'none' }}));
-        break;
-      case 4:
-        newDiceObj = { style: diceStyles.dice4Style, value: diceValues[3] };
-        setDiceStyles(prev => ({...prev, dice4Style: { display: 'none' }}));
-        break;
-      case 5:
-        newDiceObj = { style: diceStyles.dice5Style, value: diceValues[4] };
-        setDiceStyles(prev => ({...prev, dice5Style: { display: 'none' }}));
-        break;
-      default:
-        break;
-    }
-    setKeptDice((prevKeptDice) => [...prevKeptDice, <Dice key={diceNumber} style={newDiceObj.style} value={newDiceObj.value} />]);
-  };
+    console.log(`Clicked on die ${diceNumber}, which displays num ${diceValues[diceNumber - 1]}`);
+    setKeptDice(prev => {
+      const newKeptDice = [...prev];
+      newKeptDice[diceNumber - 1] = true;
+      return newKeptDice;
+    });
+    setSum(sum => sum - diceValues[diceNumber - 1]);
+    };
+  
   const handleKeptDiceClick = (diceNumber) => {
-  console.log(`Clicked on kept dice ${diceNumber}:${keptDice[diceNumber - 1].props.value}`);
-  let newDiceObj = { style: keptDice[diceNumber - 1].props.style, value: keptDice[diceNumber - 1].props.value };
-  setDiceStyles(prev => {
-    let newDiceStyles = {...prev};
-    switch (diceNumber) {
-      case 0:
-        newDiceStyles.dice1Style = {...newDiceObj.style, display: 'block'};
-        diceValues[0] = newDiceObj.value;
-        break;
-      case 1:
-        newDiceStyles.dice2Style = {...newDiceObj.style, display: 'block'};
-        diceValues[1] = newDiceObj.value;
-        break;
-      case 2:
-        newDiceStyles.dice3Style = {...newDiceObj.style, display: 'block'};
-        diceValues[2] = newDiceObj.value;
-        break;
-      case 3:
-        newDiceStyles.dice4Style = {...newDiceObj.style, display: 'block'};
-        diceValues[3] = newDiceObj.value;
-        break;
-      case 4:
-        newDiceStyles.dice5Style = {...newDiceObj.style, display: 'block'};
-        diceValues[4] = newDiceObj.value;
-        break;
-      default:
-        break;
-    }
-    return newDiceStyles;
-  });
-  setKeptDice((prevKeptDice) => prevKeptDice.filter((dice, index) => index !== diceNumber));
-};
-
+    console.log(`Clicked on stored number ${diceValues[diceNumber - 1]}`);
+    setKeptDice(prev => {
+      const newKeptDice = [...prev];
+      newKeptDice[diceNumber - 1] = false;
+      return newKeptDice;
+    });
+    setSum(sum => sum + diceValues[diceNumber - 1]);
+   };
   
 
   return (
     <div className='App'>
       <h2>Yahtzee Dice Roller</h2>
-      <h4>Result: {showSum ? totalSum : ''}</h4>
+      <h3 className='result'> Total sum: {showSum ? totalSum : ''}</h3>
       <div className='wrapper'>
-        <div className="keptDice">
-        <h3>You're keeping:</h3>
-        {keptDice.map((dice, index) => (
-          <div key={index} onClick={() => handleKeptDiceClick(index)}>
-            {dice}
-          </div>
-        ))}
-        </div>
-        <div className="container">
-          <h3>You got: {showSum ? sum : ''}</h3>
-          <Dice style={diceStyles.dice1Style} value={diceValues[0]} onClick={() => handleDiceClick(1)} />
-          <Dice style={diceStyles.dice2Style} value={diceValues[1]} onClick={() => handleDiceClick(2)} />
-          <Dice style={diceStyles.dice3Style} value={diceValues[2]} onClick={() => handleDiceClick(3)} />
-          <Dice style={diceStyles.dice4Style} value={diceValues[3]} onClick={() => handleDiceClick(4)} />
-          <Dice style={diceStyles.dice5Style} value={diceValues[4]} onClick={() => handleDiceClick(5)} />
-         </div> 
+      <div className="keptDice">
+  <h3>You're keeping:</h3>
+  {keptDice.map((isKept, index) => (
+    isKept && (
+      <div key={index} onClick={() => handleKeptDiceClick(index + 1)}>
+        <Dice style={diceStyles[`dice${index + 1}Style`]} value={diceValues[index]} />
+      </div>
+    )
+  ))}
+</div>
+<div className="container">
+  <h3>You found: </h3>
+  {diceValues.map((value, index) => (
+    !keptDice[index] && (
+      <Dice key={index} style={diceStyles[`dice${index + 1}Style`]} value={value} onClick={() => handleDiceClick(index + 1)} />
+    )
+  ))}
+</div> 
       </div> 
-      <button className='roll' ref={roll} onClick={randomDice}> Roll </button>
-    </div>
+      <button className='roll' ref={roll} onClick={randomDice} disabled={!hasDiceInContainer}> Roll </button>
+<p className="Note">After rolling, click on the dice you want to store; click on it again if you want to roll that dice again.</p>
+
+</div>
+ 
   );
 };

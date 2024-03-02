@@ -4,11 +4,11 @@
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    gap: 10px;
-    width: 500px;
-    padding: 40px 10px;
+    gap: 20px;
+    width: 100%;
+    padding: 1em 1em;
     border-radius: 30px;
-    background: #5fcb16;
+    background: rgba(92, 158, 22, 0.7);
     box-shadow:  0 0 20px rgba(0, 0, 0, 0.1);
   }
 
@@ -18,16 +18,14 @@
     align-items: center;
     flex-wrap: wrap;
     place-items: center;
-    width: 500px;
-    padding: 40px 10px;
+    width: 100%;
+    gap: 20px;
+    padding: 1em 1em;
     border-radius: 30px;
-    background: #5fcb16;
+    background: rgba(92, 158, 22, 0.7);
     box-shadow:  0 0 20px rgba(0, 0, 0, 0.1);
   }
   
-  
-
-
 
 .dice, .dice2, .dice3, .dice4, .dice5 {
     display:block;
@@ -36,7 +34,7 @@
     width: 100px;
     height: 100px;
     transform-style: preserve-3d;
-    transition:  1s ease;
+    transition: 1s ease;
   }
   
   @keyframes rolling{
@@ -142,15 +140,3 @@
                 50px 50px;
   }
   
-
-  @media only screen and (max-width: 600px) {
-    .container, .keptDice {
-      padding: 0px;
-      max-height: 90%;
-      max-width: 90%;
-    }
-    .dice, .dice2, .dice3, .dice4, .dice5 {
-      width: 20vw;
-      height: 20vw;
-    } 
-}

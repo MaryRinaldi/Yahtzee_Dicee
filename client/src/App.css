@@ -11,20 +11,20 @@ body{
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: #38Be3c;
+  background: rgb(92, 158, 22);
+  margin-left: 10px ;
 }
 
 .wrapper {
   display: flex;
-  /* flex-direction: column; */
-  /* align-items: center; */
   justify-content: center;
-  background: #38Be3c;
+  background: rgb(16, 89, 163, 0.1);
   gap: 10px;
+  border-radius: 30px;
 }
 
 h2 {
-  color: white;
+  color: rgba(255, 255, 255, 0.89);
   display: flex;
   place-items: center;
   width: auto;
@@ -33,81 +33,81 @@ h2 {
   margin-top: 40px;
 }
 
-h4 {
-  color: #a61b19;
+.result {
+  color: #bc8431;
   display: flex;
   place-items: center;
   width: auto;
   justify-content: center;
   margin-bottom: 20px;
+  border: 2px solid #bc8431;
+  background-color: rgba(255, 255, 255, 0.97);
+  padding: 12px 8px;
+  border-radius: 5px;
+  font-size: 20px;
+  font-weight:700;
+  transition: 1s;
 }
+.result:hover{
+  color: #fff;
+  background-color: #bc8431;
+  border-color: #646cff;
+}
+
 
 .App {
   position: relative; 
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  max-width: 1000px;
   }
 
 
 .roll{
   cursor: pointer;
-  color: #b9bb32;
-  margin-top: 40px; 
+  color: #bc8431;
+  margin-top: 40px;
+  margin-bottom: 20px; 
   padding: 6px 12px;
-  border-radius: 3px;
+  border-radius: 50px;
   font-size: 20px;
   font-weight:700;
-  border: 2px solid #b9bb32;
+  border: 2px solid #bc8431;
   transition: 1s;
 }
 
 .roll:hover{
   color: #fff;
-  background-color: #b9bb32;
+  background-color: #bc8431;
+  border-color: #646cff;
 }
 
-@media only screen and (max-height: 600px) {
-  body {
-    background: #38Be3c; /* Cambia il colore di sfondo solo per gli schermi più piccoli */
-  }
 
-  .App {
-    padding: 0px;
-    max-height: 90%;
-    max-width: 90%;
-  }
-  h2 {
-    margin-top: 5%; /* Riduci il margine superiore per gli schermi più piccoli */
-    margin-bottom: 5%; /* Riduci il margine inferiore per gli schermi più piccoli */
-  }
+p.Note   {  
+  margin-left: 0%;
+  margin-bottom: 40px;
+  text-align: left;     
+  width: auto;       
+  text-indent: -8px;       
+  padding: 12px 10px 12px 8px;       
+  background-color: rgba(211, 211, 211, 0.9); 
+ }
+ 
 
-  .roll {
-    margin-top: 5%;
-    margin-bottom: 0; /* Riduci il margine superiore per gli schermi più piccoli */
+p.Note::before   {        
+  content: 'Note';         
+  font-family: sans-serif;       
+  font-weight: bold;       
+  font-style: italic;       
+  font-size: 12pt;         
+  line-height: 12pt;       
+  text-transform: uppercase;
+  letter-spacing: 2px;       
+  color: lightyellow; 
+  background-color: rgba(138, 61, 139, 0.9);      
+  padding: 8px 6px 1px 6px;       
+  margin-right: 6px; 
   }
-}
-
-@media only screen and (max-width: 600px) {
-  body {
-    background: #38Be3c; /* Cambia il colore di sfondo solo per gli schermi più piccoli */
-  }
-
-  .App {
-    padding: 0px;
-    max-height: 90%;
-    max-width: 90%;
-  }
-
-  h2 {
-    margin-top: 5%; /* Riduci il margine superiore per gli schermi più piccoli */
-    margin-bottom: 5%; /* Riduci il margine inferiore per gli schermi più piccoli */
-  }
-
-  .roll {
-    margin-top: 5%;
-    margin-bottom: 0;
-  }
-}
-
 
