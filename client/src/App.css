@@ -16,18 +16,11 @@ body{
 
 .wrapper {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  /* flex-direction: column; */
+  /* align-items: center; */
   justify-content: center;
   background: #38Be3c;
   gap: 10px;
-}
-
-.keptDice, .container {
-  flex-grow: 1;
-  width: calc(50% - 10px);
-  max-width: calc(50% - 10px);
-  margin: 5px;
 }
 
 h2 {
@@ -55,19 +48,6 @@ h4 {
   flex-direction: column;
   align-items: center;
   }
-
-.keptDice {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  place-items: center;
-  width: auto;
-  padding: 40px 10px;
-  border-radius: 30px;
-  background: #5fcb16;
-  box-shadow:  0 0 20px rgba(0, 0, 0, 0.1);
-}
 
 
 .roll{

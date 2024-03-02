@@ -1,6 +1,5 @@
 import './App.css'
 import './Dice.css'
-// import { insertDiceRolls } from '../../model/database';
 import React, { useState, useRef } from "react";
 
 const Dice = ({ style, onClick, value }) => (
@@ -15,18 +14,8 @@ const Dice = ({ style, onClick, value }) => (
   </div>
 );
 
-
-//functional component for the Yahtzee dice roller app
 export default function App() {
-//state var to manage dice styles and sum
-  const [dice1Style, setDice1Style] = useState({});
-  const [dice2Style, setDice2Style] = useState({});
-  const [dice3Style, setDice3Style] = useState({});
-  const [dice4Style, setDice4Style] = useState({});
-  const [dice5Style, setDice5Style] = useState({});
-  const [sum, setSum] = useState(0)
-  const [showSum, setShowSum] = useState(false);
-  const [keptDice, setKeptDice] = useState([]);
+  const [diceValues, setDiceValues] = useState([1, 2, 3, 4, 5]);
   const [diceStyles, setDiceStyles] = useState({
     dice1Style: {},
     dice2Style: {},
@@ -34,153 +23,173 @@ export default function App() {
     dice4Style: {},
     dice5Style: {},
   });
+  const [sum, setSum] = useState(0);
+  const [showSum, setShowSum] = useState(false);
+  const [keptDice, setKeptDice] = useState([]);
+  const roll = useRef();
+  const [totalSum, setTotalSum] = useState(0);
 
-//ref for the Roll button
-const roll = useRef();
+  const randomDice = () => {
+    setSum(0);
+    setShowSum(false);
+    const newDiceValues = diceValues.map((value, index) => {
+      if (diceStyles[`dice${index + 1}Style`].display !== 'none') {
+        return rollDice(index + 1, `setDice${index + 1}Style`);
+      }
+      return value;
+    });
+    setDiceValues(newDiceValues);
+    const totalSum = newDiceValues.reduce((a, b) => a + b, 0);
+    console.log(`Result: ${newDiceValues.join(', ')}`);
+    console.log(`Sum: ${totalSum}`);
+    setTotalSum(totalSum);
+    fetch('http://localhost:5000/api/save-dice', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        dice1: newDiceValues[0],
+        dice2: newDiceValues[1],
+        dice3: newDiceValues[2],
+        dice4: newDiceValues[3],
+        dice5: newDiceValues[4],
+        total_sum: totalSum,
+      }),
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error (`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => console.log('Success:', data))
+    .catch((error) => console.error('Error:', error));
+  };
 
-//function to generate random dice results
-const randomDice = () => {
-  setSum(0);
-  setShowSum(false);
-  const dice1Result = dice1Style.display !== 'none' ? rollDice(1, setDice1Style) : 0;
-  const dice2Result = dice2Style.display !== 'none' ? rollDice(2, setDice2Style) : 0;
-  const dice3Result = dice3Style.display !== 'none' ? rollDice(3, setDice3Style) : 0;
-  const dice4Result = dice4Style.display !== 'none' ? rollDice(4, setDice4Style) : 0;
-  const dice5Result = dice5Style.display !== 'none' ? rollDice(5, setDice5Style) : 0;
-  // console.log(dice1Result,dice2Result,dice3Result,dice4Result,dice5Result)
-  // calculate sum of dice results
-  const containerDiceSum = dice1Result + dice2Result + dice3Result + dice4Result + dice5Result;
-  // calculate sum of kept dice
-  const keptDiceSum = calculateKeptDiceSum(keptDice);
-  const totalSum = containerDiceSum + keptDiceSum;
-  console.log(`Result: ${dice1Result}, ${dice2Result}, ${dice3Result}, ${dice4Result}, ${dice5Result}`);
-  console.log(`Sum: ${totalSum}`);
-  fetch('/api/save-dice', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      dice1: dice1Result,
-      dice2: dice2Result,
-      dice3: dice3Result,
-      dice4: dice4Result,
-      dice5: dice5Result,
-      total_sum: totalSum,
-    }),
-  })
-  .then(response => response.json())
-  .then(data => console.log('Success:', data))
-  .catch((error) => console.error('Error:', error));
-};
-
-
-//function to roll a single dice and update style
-const rollDice = (diceNumber, setStyleObj) => {
-  if (diceStyles[`dice${diceNumber}Style`].display === 'none') {
-    return 0; // if dice in another sect
-  }
-  const random = Math.floor(Math.random() * 6) +1;
-  if (random >= 1 && random <= 6) {
-    setStyleObj(prev => ({...prev, animation:"rolling 3s"}));
-   }
-  setTimeout(() => {
-    switch (random) {
+  const rollDice = (diceNumber) => {
+    const random = Math.floor(Math.random() * 6) + 1;
+    if (random >= 1 && random <= 6) {
+      setDiceStyles(prev => ({...prev, [`dice${diceNumber}Style`]: {...prev[`dice${diceNumber}Style`], animation:"rolling 3s"}}));
+    }
+    setTimeout(() => {
+      switch (random) {
+        case 1:
+          setDiceStyles(prev => ({...prev, [`dice${diceNumber}Style`]: {...prev[`dice${diceNumber}Style`], transform: 'rotateX(0deg) rotateY(0deg)'}}));
+          break;
+        case 6:
+          setDiceStyles(prev => ({...prev, [`dice${diceNumber}Style`]: {...prev[`dice${diceNumber}Style`], transform: 'rotateX(180deg) rotateY(0deg)'}}));
+          break;
+        case 2:
+          setDiceStyles(prev => ({...prev, [`dice${diceNumber}Style`]: {...prev[`dice${diceNumber}Style`], transform: 'rotateX(-90deg) rotateY(0deg)'}}));
+          break;
+        case 5:
+          setDiceStyles(prev => ({...prev, [`dice${diceNumber}Style`]: {...prev[`dice${diceNumber}Style`], transform: 'rotateX(90deg) rotateY(0deg)'}}));
+          break;
+        case 3:
+          setDiceStyles(prev => ({...prev, [`dice${diceNumber}Style`]: {...prev[`dice${diceNumber}Style`], transform: 'rotateX(0deg) rotateY(90deg)'}}));
+          break;
+        case 4:
+          setDiceStyles(prev => ({...prev, [`dice${diceNumber}Style`]: {...prev[`dice${diceNumber}Style`], transform: 'rotateX(0deg) rotateY(-90deg)'}}));
+          break;
+        default:
+          break;
+      }
+      setDiceStyles(prev => ({...prev, [`dice${diceNumber}Style`]: {...prev[`dice${diceNumber}Style`], animation: 'none'}}));
+      setSum(sum => sum + random);
+      setShowSum(true);
+    }, 1050);
+    return random;
+  };
+  
+  const handleDiceClick = (diceNumber) => {
+    console.log(`Clicked on dice ${diceNumber}:${diceValues[diceNumber - 1]}`);
+    let newDiceObj = {};
+    switch (diceNumber) {
       case 1:
-        setStyleObj(prev => ({...prev, transform: 'rotateX(0deg) rotateY(0deg)'}));
-        break;
-      case 6:
-        setStyleObj(prev => ({...prev, transform: 'rotateX(180deg) rotateY(0deg)'}));
+        newDiceObj = { style: diceStyles.dice1Style, value: diceValues[0] };
+        setDiceStyles(prev => ({...prev, dice1Style: { display: 'none' }}));
         break;
       case 2:
-        setStyleObj(prev => ({...prev, transform: 'rotateX(-90deg) rotateY(0deg)'}));
-        break;
-      case 5:
-       setStyleObj(prev => ({...prev, transform: 'rotateX(90deg) rotateY(0deg)'}));
+        newDiceObj = { style: diceStyles.dice2Style, value: diceValues[1] };
+        setDiceStyles(prev => ({...prev, dice2Style: { display: 'none' }}));
         break;
       case 3:
-        setStyleObj(prev => ({...prev, transform: 'rotateX(0deg) rotateY(90deg)'}));
+        newDiceObj = { style: diceStyles.dice3Style, value: diceValues[2] };
+        setDiceStyles(prev => ({...prev, dice3Style: { display: 'none' }}));
         break;
       case 4:
-        setStyleObj(prev => ({...prev, transform: 'rotateX(0deg) rotateY(-90deg)'}));
+        newDiceObj = { style: diceStyles.dice4Style, value: diceValues[3] };
+        setDiceStyles(prev => ({...prev, dice4Style: { display: 'none' }}));
+        break;
+      case 5:
+        newDiceObj = { style: diceStyles.dice5Style, value: diceValues[4] };
+        setDiceStyles(prev => ({...prev, dice5Style: { display: 'none' }}));
         break;
       default:
         break;
     }
-    setStyleObj(prev => ({...prev, animation: 'none'}));
-    setSum(sum => sum + random)
-    setShowSum(true);
-  }, 1050);
-  return random;
-}
-
-const calculateKeptDiceSum = (keptDice) => {
-  let keptDiceSum = 0;
-  keptDice.forEach((value) => { //using value from dice
-    keptDiceSum += value;
+    setKeptDice((prevKeptDice) => [...prevKeptDice, <Dice key={diceNumber} style={newDiceObj.style} value={newDiceObj.value} />]);
+  };
+  const handleKeptDiceClick = (diceNumber) => {
+  console.log(`Clicked on kept dice ${diceNumber}:${keptDice[diceNumber - 1].props.value}`);
+  let newDiceObj = { style: keptDice[diceNumber - 1].props.style, value: keptDice[diceNumber - 1].props.value };
+  setDiceStyles(prev => {
+    let newDiceStyles = {...prev};
+    switch (diceNumber) {
+      case 0:
+        newDiceStyles.dice1Style = {...newDiceObj.style, display: 'block'};
+        diceValues[0] = newDiceObj.value;
+        break;
+      case 1:
+        newDiceStyles.dice2Style = {...newDiceObj.style, display: 'block'};
+        diceValues[1] = newDiceObj.value;
+        break;
+      case 2:
+        newDiceStyles.dice3Style = {...newDiceObj.style, display: 'block'};
+        diceValues[2] = newDiceObj.value;
+        break;
+      case 3:
+        newDiceStyles.dice4Style = {...newDiceObj.style, display: 'block'};
+        diceValues[3] = newDiceObj.value;
+        break;
+      case 4:
+        newDiceStyles.dice5Style = {...newDiceObj.style, display: 'block'};
+        diceValues[4] = newDiceObj.value;
+        break;
+      default:
+        break;
+    }
+    return newDiceStyles;
   });
-  console.log(keptDiceSum)
-  return keptDiceSum
+  setKeptDice((prevKeptDice) => prevKeptDice.filter((dice, index) => index !== diceNumber));
 };
 
+  
 
-
-//function to click on specific dice
-const handleDiceClick = (diceNumber) => {
-  console.log(`Clicked on dice ${diceNumber}`);
-  let newStyleObj = {};
-  switch (diceNumber) {
-    case 1:
-      newStyleObj = { ...dice1Style };
-      setDice1Style({ display: 'none' }); // Hide the dice in the container
-      break;
-    case 2:
-      newStyleObj = { ...dice2Style };
-      setDice2Style({ display: 'none' });
-      break;
-    case 3:
-      newStyleObj = { ...dice3Style };
-      setDice3Style({ display: 'none' });
-      break;
-    case 4:
-      newStyleObj = { ...dice4Style };
-      setDice4Style({ display: 'none' });
-      break;
-    case 5:
-      newStyleObj = { ...dice5Style };
-      setDice5Style({ display: 'none' });
-      break;
-    default:
-      break;
-  }
-  // Add the clicked dice to keptDice
-  setKeptDice((prevKeptDice) => [...prevKeptDice, <Dice key={diceNumber} style={newStyleObj} />]);
-};
-//JSX to render the app
   return (
     <div className='App'>
       <h2>Yahtzee Dice Roller</h2>
-      <h4>Result: {showSum ? sum : ''}</h4>
+      <h4>Result: {showSum ? totalSum : ''}</h4>
       <div className='wrapper'>
-      <div className="keptDice">
-          <h3>You're keeping:</h3>
-          {keptDice.map((dice, index) => (
-            <React.Fragment key={index}>{dice}</React.Fragment>
-          ))}
+        <div className="keptDice">
+        <h3>You're keeping:</h3>
+        {keptDice.map((dice, index) => (
+          <div key={index} onClick={() => handleKeptDiceClick(index)}>
+            {dice}
+          </div>
+        ))}
         </div>
-     <div className="container">
-        <Dice style={dice1Style} onClick={() => handleDiceClick(1)} />
-        <Dice style={dice2Style} onClick={() => handleDiceClick(2)} />
-        <Dice style={dice3Style} onClick={() => handleDiceClick(3)} />
-        <Dice style={dice4Style} onClick={() => handleDiceClick(4)} />
-        <Dice style={dice5Style} onClick={() => handleDiceClick(5)} />
-       </div> 
-       </div> 
+        <div className="container">
+          <h3>You got: {showSum ? sum : ''}</h3>
+          <Dice style={diceStyles.dice1Style} value={diceValues[0]} onClick={() => handleDiceClick(1)} />
+          <Dice style={diceStyles.dice2Style} value={diceValues[1]} onClick={() => handleDiceClick(2)} />
+          <Dice style={diceStyles.dice3Style} value={diceValues[2]} onClick={() => handleDiceClick(3)} />
+          <Dice style={diceStyles.dice4Style} value={diceValues[3]} onClick={() => handleDiceClick(4)} />
+          <Dice style={diceStyles.dice5Style} value={diceValues[4]} onClick={() => handleDiceClick(5)} />
+         </div> 
+      </div> 
       <button className='roll' ref={roll} onClick={randomDice}> Roll </button>
-      </div>
-
-   
-   
+    </div>
   );
 };
-

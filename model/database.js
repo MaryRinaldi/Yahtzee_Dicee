@@ -20,12 +20,12 @@ con.connect(function(err) {
   console.log("Connected!");
 })
   // Creation of the table for dice data
-function insertDiceRolls(roll1, roll2, roll3, roll4, roll5, totalSum) {
+function insertDiceRolls(dice1, dice2, dice3, dice4, dice5, totalSum) {
   const sql = `
-    INSERT INTO dice_rolls (roll1, roll2, roll3, roll4, roll5, total_sum)
+    INSERT INTO dice_rolls (dice1, dice2, dice3, dice4, dice5, total_sum)
     VALUES (?, ?, ?, ?, ?, ?)
   `;
-  const values = [roll1, roll2, roll3, roll4, roll5, totalSum];
+  const values = [dice1, dice2, dice3, dice4, dice5, totalSum];
 
   console.log(values)
 
