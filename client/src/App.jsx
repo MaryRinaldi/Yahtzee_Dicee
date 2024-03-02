@@ -47,16 +47,33 @@ const randomDice = () => {
   const dice3Result = dice3Style.display !== 'none' ? rollDice(3, setDice3Style) : 0;
   const dice4Result = dice4Style.display !== 'none' ? rollDice(4, setDice4Style) : 0;
   const dice5Result = dice5Style.display !== 'none' ? rollDice(5, setDice5Style) : 0;
-  console.log(dice1Result,dice2Result,dice3Result,dice4Result,dice5Result)
+  // console.log(dice1Result,dice2Result,dice3Result,dice4Result,dice5Result)
   // calculate sum of dice results
   const containerDiceSum = dice1Result + dice2Result + dice3Result + dice4Result + dice5Result;
   // calculate sum of kept dice
-  const keptDiceSum = calculateKeptDiceSum();
+  const keptDiceSum = calculateKeptDiceSum(keptDice);
   const totalSum = containerDiceSum + keptDiceSum;
   console.log(`Result: ${dice1Result}, ${dice2Result}, ${dice3Result}, ${dice4Result}, ${dice5Result}`);
   console.log(`Sum: ${totalSum}`);
-  
+  fetch('/api/save-dice', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      dice1: dice1Result,
+      dice2: dice2Result,
+      dice3: dice3Result,
+      dice4: dice4Result,
+      dice5: dice5Result,
+      total_sum: totalSum,
+    }),
+  })
+  .then(response => response.json())
+  .then(data => console.log('Success:', data))
+  .catch((error) => console.error('Error:', error));
 };
+
 
 //function to roll a single dice and update style
 const rollDice = (diceNumber, setStyleObj) => {
@@ -64,7 +81,6 @@ const rollDice = (diceNumber, setStyleObj) => {
     return 0; // if dice in another sect
   }
   const random = Math.floor(Math.random() * 6) +1;
-  console.log(random);
   if (random >= 1 && random <= 6) {
     setStyleObj(prev => ({...prev, animation:"rolling 3s"}));
    }
@@ -98,11 +114,10 @@ const rollDice = (diceNumber, setStyleObj) => {
   return random;
 }
 
-const calculateKeptDiceSum = () => {
-  console.log(Dice.props);
+const calculateKeptDiceSum = (keptDice) => {
   let keptDiceSum = 0;
-  keptDice.forEach((dice) => { //using value from dice props
-    keptDiceSum += dice.props.value;
+  keptDice.forEach((value) => { //using value from dice
+    keptDiceSum += value;
   });
   console.log(keptDiceSum)
   return keptDiceSum

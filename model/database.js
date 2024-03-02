@@ -11,7 +11,7 @@ const con = mysql.createConnection({
   host: DB_HOST || "127.0.0.1",
   user: DB_USER || "root",
   password: DB_PASS,
-  database: DB_NAME || "Yahtzee_game",
+  database: DB_NAME || "yahtzee_game",
   multipleStatements: true
 });
 
@@ -30,10 +30,21 @@ function insertDiceRolls(roll1, roll2, roll3, roll4, roll5, totalSum) {
   console.log(values)
 
   con.query(sql, values, function(err, result) {
-    if (err) throw err;
+    if (err) {
+      console.error(err)
+      throw err;
+    }
     console.log("Table creation `dice_rolls` was successful!");
-   });
+    // After inserting data, close the connection
+    con.end(function(err) {
+      if (err) {
+        console.error(err)
+        throw err;}
+      console.log("Connection closed.");
+    });
+  });
 }
+
 
   module.exports = {
     con,

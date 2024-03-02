@@ -1,8 +1,8 @@
 -- Drop Tables
-DROP TABLE IF EXISTS dice_results;
+DROP TABLE IF EXISTS dice_rolls;
 
 -- Create Tables
-CREATE TABLE dice_results (
+CREATE TABLE dice_rolls (
     id INT NOT NULL AUTO_INCREMENT,
     dice1 INT NOT NULL,
     dice2 INT NOT NULL,
