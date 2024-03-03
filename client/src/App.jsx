@@ -1,9 +1,8 @@
+import React, { useState, useRef } from "react";
+import { Dice, rollDice } from './Dice.jsx';
 import './App.css'
 import './dice.css'
 import './media.css'
-import { Dice, rollDice } from './Dice.jsx';
-import React, { useState, useRef } from "react";
-
 
 export default function App() {
   
@@ -27,7 +26,7 @@ export default function App() {
     setShowSum(false);
     const newDiceValues = diceValues.map((value, index) => {
       if (!keptDice[index]) {
-        return rollDice(index + 1, `setDice${index + 1}Style`);
+        return rollDice({diceNumber: index + 1, setDiceStyles, diceValues, keptDice});
       }
       return value;
     });
@@ -60,40 +59,7 @@ export default function App() {
     .catch((error) => console.error('Error:', error));
   };
 
-  const rollDice = (diceNumber) => {
-    const random = Math.floor(Math.random() * 6) + 1;
-    if (random >= 1 && random <= 6) {
-      setDiceStyles(prev => ({...prev, [`dice${diceNumber}Style`]: {...prev[`dice${diceNumber}Style`], animation:"rolling 3s"}}));
-    }
-    setTimeout(() => {
-      switch (random) {
-        case 1:
-          setDiceStyles(prev => ({...prev, [`dice${diceNumber}Style`]: {...prev[`dice${diceNumber}Style`], transform: 'rotateX(0deg) rotateY(0deg)'}}));
-          break;
-        case 6:
-          setDiceStyles(prev => ({...prev, [`dice${diceNumber}Style`]: {...prev[`dice${diceNumber}Style`], transform: 'rotateX(180deg) rotateY(0deg)'}}));
-          break;
-        case 2:
-          setDiceStyles(prev => ({...prev, [`dice${diceNumber}Style`]: {...prev[`dice${diceNumber}Style`], transform: 'rotateX(-90deg) rotateY(0deg)'}}));
-          break;
-        case 5:
-          setDiceStyles(prev => ({...prev, [`dice${diceNumber}Style`]: {...prev[`dice${diceNumber}Style`], transform: 'rotateX(90deg) rotateY(0deg)'}}));
-          break;
-        case 3:
-          setDiceStyles(prev => ({...prev, [`dice${diceNumber}Style`]: {...prev[`dice${diceNumber}Style`], transform: 'rotateX(0deg) rotateY(90deg)'}}));
-          break;
-        case 4:
-          setDiceStyles(prev => ({...prev, [`dice${diceNumber}Style`]: {...prev[`dice${diceNumber}Style`], transform: 'rotateX(0deg) rotateY(-90deg)'}}));
-          break;
-        default:
-          break;
-      }
-      setDiceStyles(prev => ({...prev, [`dice${diceNumber}Style`]: {...prev[`dice${diceNumber}Style`], animation: 'none'}}));
-      setSum(sum => sum + random);
-      setShowSum(true);
-    }, 1050);
-    return random;
-  };
+ 
   
   const handleDiceClick = (diceNumber) => {
     console.log(`Clicked on die ${diceNumber}, which displays num ${diceValues[diceNumber - 1]}`);
@@ -126,7 +92,13 @@ export default function App() {
   {keptDice.map((isKept, index) => (
     isKept && (
       <div key={index} onClick={() => handleKeptDiceClick(index + 1)}>
-        <Dice style={diceStyles[`dice${index + 1}Style`]} value={diceValues[index]} />
+        <Dice
+        style={diceStyles[`dice${index + 1}Style`]}
+        value={diceValues[index]}
+        diceValues={diceValues}
+        keptDice={keptDice}
+        setDiceStyles={setDiceStyles}
+        />
       </div>
     )
   ))}
@@ -135,7 +107,14 @@ export default function App() {
   <h3>You found: </h3>
   {diceValues.map((value, index) => (
     !keptDice[index] && (
-      <Dice key={index} style={diceStyles[`dice${index + 1}Style`]} value={value} onClick={() => handleDiceClick(index + 1)} />
+      <Dice
+      key={index}
+      style={diceStyles[`dice${index + 1}Style`]}
+      value={value}
+      onClick={() => handleDiceClick(index + 1)}
+      diceNumber={index + 1} 
+      setDiceStyles={setDiceStyles} 
+       />
     )
   ))}
 </div> 

@@ -1,7 +1,7 @@
 import React from 'react';
 
-export const Dice = ({ style, onClick, value }) => (
-  <div className="dice" style={style} onClick={onClick}>
+export const Dice = ({ style, onClick, value, diceNumber, setDiceStyles }) => (
+  <div className="dice" style={style} onClick={() => onClick(diceNumber)}>
     <div className="face front"></div>
     <div className="face back"></div>
     <div className="face top"></div>
@@ -12,9 +12,10 @@ export const Dice = ({ style, onClick, value }) => (
   </div>
 );
 
-export const rollDice = (diceNumber, setDiceStyles) => {
+export const rollDice = ({diceNumber, setDiceStyles, diceValues, keptDice}) => {
   const random = Math.floor(Math.random() * 6) + 1;
   if (random >= 1 && random <= 6) {
+    //checking for the face style:
     setDiceStyles(prev => ({...prev, [`dice${diceNumber}Style`]: {...prev[`dice${diceNumber}Style`], animation:"rolling 3s"}}));
   }
   setTimeout(() => {
