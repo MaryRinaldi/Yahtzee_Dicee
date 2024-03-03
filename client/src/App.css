@@ -29,8 +29,8 @@ h2 {
   place-items: center;
   width: auto;
   justify-content: center;
-  margin-bottom: 40px;
-  margin-top: 40px;
+  margin-bottom: 30px;
+  margin-top: 50px;
 }
 
 .result {
@@ -39,21 +39,15 @@ h2 {
   place-items: center;
   width: auto;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  margin-top: 20px;
   border: 2px solid #bc8431;
   background-color: rgba(255, 255, 255, 0.97);
-  padding: 12px 8px;
+  padding: 8px 4px;
   border-radius: 5px;
-  font-size: 20px;
+  font-size: 19px;
   font-weight:700;
-  transition: 1s;
 }
-.result:hover{
-  color: #fff;
-  background-color: #bc8431;
-  border-color: #646cff;
-}
-
 
 .App {
   position: relative; 
@@ -64,21 +58,54 @@ h2 {
   max-width: 1000px;
   }
 
+  
+p {  
+  color: #bc8431;
+  display: flex;
+  place-items: center;
+  width: auto;
+  justify-content: center;
+  margin-bottom: 20px;
+  border: 2px solid #bc8431;
+  background-color: rgba(255, 255, 255, 0.97);
+  padding: 8px 4px;
+  border-radius: 5px;
+  font-size: 18px;
+  font-weight:700;
+}
 
-.roll{
+.roll {
   cursor: pointer;
   color: #bc8431;
-  margin-top: 40px;
-  margin-bottom: 20px; 
+  margin-top: 30px;
+  margin-bottom: 10px; 
   padding: 6px 12px;
   border-radius: 50px;
-  font-size: 20px;
-  font-weight:700;
+  font-size: 18px;
+  font-weight:600;
+  border: 2px solid #bc8431;
+  transition: 1s;
+}
+
+.newTurn  {
+  cursor: pointer;
+  color: #bc8431;
+  margin-bottom: 40px; 
+  padding: 6px 12px;
+  border-radius: 50px;
+  font-size: 18px;
+  font-weight:600;
   border: 2px solid #bc8431;
   transition: 1s;
 }
 
 .roll:hover{
+  color: #fff;
+  background-color: #bc8431;
+  border-color: #646cff;
+}
+
+.newTurn:hover{
   color: #fff;
   background-color: #bc8431;
   border-color: #646cff;
@@ -107,7 +134,8 @@ p.Note::before   {
   letter-spacing: 2px;       
   color: lightyellow; 
   background-color: rgba(138, 61, 139, 0.9);      
-  padding: 8px 6px 1px 6px;       
-  margin-right: 6px; 
+  padding: 8px 6px 1px 8px;       
+  margin-right: 10px; 
+  margin-left: 2px;
   }
 

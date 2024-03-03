@@ -20,10 +20,11 @@ export default function App() {
   const roll = useRef();
   const [totalSum, setTotalSum] = useState(0);
   const hasDiceInContainer = keptDice.includes(false)
+  const [throwCount, setThrowCount] = useState(0);
 
   const randomDice = () => {
+    setThrowCount(prevCount => prevCount +1);
     setSum(0);
-    setShowSum(false);
     const newDiceValues = diceValues.map((value, index) => {
       if (!keptDice[index]) {
         return rollDice({diceNumber: index + 1, setDiceStyles, diceValues, keptDice});
@@ -34,7 +35,9 @@ export default function App() {
     const totalSum = newDiceValues.reduce((a, b) => a + b, 0);
     console.log(`Result: ${newDiceValues.join(', ')}`);
     console.log(`Sum: ${totalSum}`);
-    setTotalSum(totalSum);
+    setTimeout(() => {
+      setTotalSum(totalSum);
+      setShowSum(true)}, 1200); 
     fetch('http://localhost:5000/api/save-dice', {
       method: 'POST',
       headers: {
@@ -59,7 +62,13 @@ export default function App() {
     .catch((error) => console.error('Error:', error));
   };
 
- 
+  const startNewTurn = () => {
+    setThrowCount(0);
+    setKeptDice([false, false, false, false, false,]);
+    setDiceValues([1, 2, 3, 4, 5]);
+    setTotalSum(0);
+    setShowSum(false);
+  };
   
   const handleDiceClick = (diceNumber) => {
     console.log(`Clicked on die ${diceNumber}, which displays num ${diceValues[diceNumber - 1]}`);
@@ -86,6 +95,7 @@ export default function App() {
     <div className='App'>
       <h2>Yahtzee Dice Roller</h2>
       <h3 className='result'> Total sum: {showSum ? totalSum : ''}</h3>
+      <p>Count your throws: {throwCount}</p>
       <div className='wrapper'>
       <div className="keptDice">
   <h3>You're keeping:</h3>
@@ -120,9 +130,8 @@ export default function App() {
 </div> 
       </div> 
       <button className='roll' ref={roll} onClick={randomDice} disabled={!hasDiceInContainer}> Roll </button>
+      <button className='newTurn' onClick={startNewTurn}>Start New Turn</button>
 <p className="Note">After rolling, click on the dice you want to store; click on it again if you want to roll that dice again.</p>
-
 </div>
- 
   );
 };
