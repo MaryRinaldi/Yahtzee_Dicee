@@ -11,16 +11,18 @@ body{
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: rgb(92, 158, 22);
+  background: rgb(99, 163, 31);
   margin-left: 10px ;
 }
 
 .wrapper {
   display: flex;
   justify-content: center;
-  background: rgb(16, 89, 163, 0.1);
+  background: #fff;
   gap: 10px;
+  padding: 25px 40px;
   border-radius: 30px;
+
 }
 
 h2 {
@@ -29,8 +31,8 @@ h2 {
   place-items: center;
   width: auto;
   justify-content: center;
-  margin-bottom: 30px;
-  margin-top: 50px;
+  margin-bottom: 20px;
+  margin-top: 20px;
 }
 
 .result {
@@ -59,7 +61,7 @@ h2 {
   }
 
   
-p {  
+.counts {  
   color: #bc8431;
   display: flex;
   place-items: center;
@@ -72,6 +74,41 @@ p {
   border-radius: 5px;
   font-size: 18px;
   font-weight:700;
+}
+
+ul {
+  list-style-type: none;
+  color:#bc8431;
+  background-color: #fff;
+  border: 2px solid #bc8431;
+  border-radius: 5px;
+  padding: 0.5%;
+  font-weight: 600;
+  font-size: 15px;
+  }
+
+
+.throws {
+    list-style-type:disc;
+    background-color: #fff;
+    font-weight: 600;
+    margin: 0px 12px;
+}
+
+.lastThrow {
+  background-color: #fff;
+  font-weight: 600;
+  margin: 11px 10px;
+}
+
+select {
+  background-color: #fff;
+  border-style: outset;
+  border: 2px solid #bc8431;
+  border-radius: 5px;
+  margin: 2px;
+  font-weight: 600;
+  padding: 0.5% ;
 }
 
 .roll {
