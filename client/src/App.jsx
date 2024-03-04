@@ -154,9 +154,9 @@ export default function App() {
 <select onChange={(e) => handleRollSelect(e.target.value)}>
   {diceRolls.length > 0 && (
     <>
-    <option value="lastThrow">Select a roll</option>
+    <option value="lastThrow">Select a throw</option>
   {diceRolls.map((roll, index) => (
-    <option key={index} value={roll.id}>Roll N. {roll.id}</option> 
+    <option key={index} value={roll.id}>Throw N. {roll.id}</option> 
   ))}
     </>
   )}
@@ -178,7 +178,7 @@ export default function App() {
     diceRolls.filter(roll => roll.id === Number(selectedRollId))  //filter array diceRoll to find ID corresponding to selected one (must be a num)
     .map((roll, index) => ( 
       <li className="throws" key={index}>
-        <p>Throw {roll.id}</p>
+        {/* <p>Throw {roll.id}</p> */}
         <p>Die 1: {roll.dice1}</p>
         <p>Die 2: {roll.dice2}</p>
         <p>Die 3: {roll.dice3}</p>

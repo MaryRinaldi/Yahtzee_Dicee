@@ -19,9 +19,9 @@ body{
   display: flex;
   justify-content: center;
   background: #fff;
-  gap: 10px;
+  gap: 4%;
   padding: 25px 40px;
-  border-radius: 30px;
+  border-radius: 5px;
 
 }
 
@@ -31,8 +31,8 @@ h2 {
   place-items: center;
   width: auto;
   justify-content: center;
-  margin-bottom: 20px;
-  margin-top: 20px;
+  margin-bottom: 2%;
+  margin-top: 0.8%;
 }
 
 .result {
@@ -46,7 +46,7 @@ h2 {
   border: 2px solid #bc8431;
   background-color: rgba(255, 255, 255, 0.97);
   padding: 8px 4px;
-  border-radius: 5px;
+  border-radius: 3px;
   font-size: 19px;
   font-weight:700;
 }
@@ -71,7 +71,7 @@ h2 {
   border: 2px solid #bc8431;
   background-color: rgba(255, 255, 255, 0.97);
   padding: 8px 4px;
-  border-radius: 5px;
+  border-radius: 3px;
   font-size: 18px;
   font-weight:700;
 }
@@ -81,15 +81,15 @@ ul {
   color:#bc8431;
   background-color: #fff;
   border: 2px solid #bc8431;
-  border-radius: 5px;
+  border-radius: 3px;
   padding: 0.5%;
   font-weight: 600;
   font-size: 15px;
+  margin-bottom: 2.4%;
   }
 
 
 .throws {
-    list-style-type:disc;
     background-color: #fff;
     font-weight: 600;
     margin: 0px 12px;
@@ -98,15 +98,16 @@ ul {
 .lastThrow {
   background-color: #fff;
   font-weight: 600;
-  margin: 11px 10px;
+  margin: 0px 12px;
 }
+
 
 select {
   background-color: #fff;
   border-style: outset;
   border: 2px solid #bc8431;
-  border-radius: 5px;
-  margin: 2px;
+  border-radius: 3px;
+  margin: 0.7%;
   font-weight: 600;
   padding: 0.5% ;
 }
